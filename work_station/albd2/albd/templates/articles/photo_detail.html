@@ -1,0 +1,115 @@
+{% extends 'articles/base.html' %}
+{% load i18n %}
+{% load comments %}
+{% load widget_tweaks %}
+{% load thumbnail %}
+{% load hitcount_tags %}
+{% load humanize %}
+{% load latest_news %}
+{% load photo_gallery %}
+{% load video_gallery %}
+
+{% block content %}
+  <section>
+    <div class="row">
+      <div class="col-md-9"> <!-- Start left side -->
+        <h1>{{ object.title }}</h1>
+        {% for photo in object.photos.all %}
+
+          <div class="detailsImage">
+            <div class="photoCount">{{ forloop.counter }}/{{ object.photos.count }}</div>
+            <img class="img-responsive" src="{{ photo.image.file.url }}" alt="Details Image">
+
+            <p>{{ photo.description }}</p>
+          </div>
+
+          <div class="publishDate"><!--publishDate -->
+            {% if photo.credit %} {% trans "Photo by" %}: {{ photo.credit }}, {% endif %}
+            {% trans "Published on" %} {{ object.publish_date|date:"jS F Y H:i" }}
+
+          </div><!--/End publishDate -->
+
+        {% endfor %}
+
+      </div><!-- //End left side -->
+      <div class="col-md-3">
+        <!-- Start Right side -->
+
+        <!-- Image Gallery -->
+        <h2 class="contentTitle noMargin">{% trans "In picture" %}</h2>
+
+        <div class="rightGallery"> <!-- Start Right Gallery -->
+
+          {% get_photo_gallery as photo_gallery %}
+          {% for url, news in photo_gallery.items %}
+            {% if forloop.first %}
+              <div class="detailsImage">
+                <img class="img-responsive" src="{{ news.photos.first.image.file.url }}" alt="Details Image">
+                <div class="caption">{{ news.title }}</div>
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          <div class="row thumbViewArea">
+            {% for url, news in photo_gallery.items %}
+              {% if forloop.counter > 1 %}
+                <div class="col-sm-6 col-xs-6">
+                  <div class="smallThumbBox">
+                    <div class="thumbImage">
+                      <a class="thumbIcon" href="#"><i class="fa {{ news.icon_class }}"></i></a>
+                      <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                           alt="video">
+                    </div>
+                    <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div><!-- //EndImage Gallery -->
+
+
+        </div><!-- //End Right Gallery -->
+
+
+        <!-- Video Gallery -->
+
+        <h2 class="contentTitle noMargin">{% trans "Video" %}</h2>
+
+        <div class="rightGallery"><!-- Start Right Gallery -->
+
+          {% get_video_gallery as video_gallery %}
+          {% for url, news in video_gallery.items %}
+            {% if forloop.first %}
+
+              <div class="detailsImage">
+                <iframe width="100%" src="{{ news.video_url }}"
+                        frameborder="0" allowfullscreen="" __idm_id__="683216897"></iframe>
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          <div class="row thumbViewArea">
+            {% for url, news in video_gallery.items %}
+              {% if forloop.counter > 1 %}
+                <div class="col-sm-6 col-xs-6">
+                  <div class="smallThumbBox">
+                    <div class="thumbImage">
+                      <a class="thumbIcon" href="#"><i class="fa {{ news.icon_class }}"></i></a>
+                      <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                           alt="video">
+                    </div>
+                    <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <!-- End Gallery -->
+
+        </div><!-- //End Right Gallery -->
+
+      </div><!-- //..End  Right side -->
+    </div>
+  </section>
+{% endblock content %}

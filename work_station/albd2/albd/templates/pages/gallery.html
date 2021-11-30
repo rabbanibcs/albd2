@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <h1>Gallery</h1>
+
+    <section>
+        <div class="row">
+
+            <div class="col-md-6"><!--Video Gallery -->
+                <h2 class="contentTitle mb10">Video gallery</h2>
+                <div class="row">
+                    {% for item in videos %}
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="smallThumbBox">
+                            <div class="thumbImage">
+                                <span class="minutes"><i class="fa fa-clock-o"></i> {{ item.time_span  }} ago</span>
+                                <a class="thumbIcon" href=""><i class="fa fa-play-circle"></i></a>
+                                {% if item.video_url %}
+                                    <iframe width="100%" height="250"
+                                            src="{{ item.video_url }}" frameborder="0"
+                                            allowfullscreen="" __idm_id__="683216897"></iframe>
+                                {% else %}
+                                     <img class="img-responsive" src="{{ item.videos.first.image.file.url }}" alt="video">
+                                {% endif %}
+                                <div class="catName">{{ item.category.name }}</div>
+                            </div>
+                            <h2><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h2>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+            </div><!--///End Video Gallery -->
+
+
+            <div class="col-md-6"><!--Image Gallery -->
+                <h2 class="contentTitle">Image Gallery</h2>
+                <div class="row moreImageGallery">
+                    {% for item in photos %}
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="smallThumbBox">
+                            <div class="thumbImage">
+                                <span class="minutes"><i class="fa fa-clock-o"></i> {{ item.time_span }} ago</span>
+                                <span class="count">+{{ item.photos.count }}</span>
+                                <a class="thumbIcon" href="#"><i class="fa fa-camera"></i></a>
+                                <img class="img-responsive" src="{{ item.photos.first.image.file.url }}" alt="image">
+                            </div>
+                            <h2><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h2>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div> <!--//End Image Gallery -->
+
+
+        </div>
+
+    </section>
+
+    <a class="btn btn-primary center-block" href="#">Load More</a>
+
+{% endblock content %}

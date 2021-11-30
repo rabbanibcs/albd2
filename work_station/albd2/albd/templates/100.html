@@ -1,0 +1,166 @@
+{% load static i18n %}
+{% load compress %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block meta %}
+    {% endblock %}
+    <title>{% block title %}Bangladesh Awami League{% endblock title %}</title>
+
+    {% block social_meta %}
+
+    {% endblock %}
+
+
+    {% block css %}
+      {% compress css %}
+        <!-- Bootstrap -->
+        <link href="{% static 'js/lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <!-- Font Awesome - font-awesome-4.7.0 -->
+        <link href="{% static 'js/lib/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/dcalendar.picker.css' %}" rel="stylesheet" >
+
+        <!-- Your stuff: Third-party CSS libraries go here -->
+        <link href="{% static 'css/ticker-style.css' %}" rel="stylesheet">
+        <link href="{% static 'css/jquery.bxslider.css' %}" rel="stylesheet">
+        <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+
+        <!-- This file stores project-specific CSS -->
+        <link href="{% static 'css/project.css' %}" rel="stylesheet">
+
+      {% endcompress %}
+      {% compress js preload %}
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+      {% endcompress %}
+
+
+    {% endblock %}
+
+</head>
+
+<body>
+
+<div id="fb-root"></div>
+<script>
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId=204463129958622";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+<script>window.twttr = (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+    if (d.getElementById(id)) return t;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+
+    t._e = [];
+    t.ready = function (f) {
+        t._e.push(f);
+    };
+
+    return t;
+}(document, "script", "twitter-wjs"));</script>
+
+<script type="text/javascript">
+    (function () {
+        var po = document.createElement('script');
+        po.type = 'text/javascript';
+        po.async = true;
+        po.src = 'https://apis.google.com/js/platform.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(po, s);
+    })();
+</script>
+
+{% include "elements/topbar.html" %}
+{% include "elements/m100.html" %}
+
+<div id="wrapper" class="side-collapse-container">
+    {% include "elements/searchbox.html" %}
+    <!-- Start Page content here-->
+    <div id="pageContent" class="container">
+        {% block content %}
+            All content goes here.
+        {% endblock content %}
+    </div>
+    <!-- /..End Page content here-->
+    {% include "elements/footer.html" %}
+
+
+    <div class="bottomBar"></div>
+</div>
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{% compress js %}
+{% block javascript %}
+
+    <!-- Your stuff: Third-party javascript libraries go here -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'js/lib/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <script src="{% static 'js/dcalendar.picker.js' %}"></script>
+
+
+    <!-- All custom JS -->
+    {#    <script src="{% static 'js/jquery.vticker.js' %}"></script>#}
+    <script src="{% static 'js/jquery.bxslider.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+
+    <!-- place project specific Javascript in this file -->
+    <script src="{% static 'js/lib/html5gallery/html5gallery.js' %}"></script>
+
+{% endblock javascript %}
+{% endcompress %}
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59648e6b226d55b0"></script>
+
+<script type="text/javascript">
+    {% block extra_js %}
+    {% endblock extra_js %}
+</script>
+<!-- Your Chat Plugin code -->
+<div id="fb-customer-chat" class="fb-customerchat">
+</div>
+
+<script>
+  var chatbox = document.getElementById('fb-customer-chat');
+  chatbox.setAttribute("page_id", "166064673583399");
+  chatbox.setAttribute("attribution", "page_inbox");
+  window.fbAsyncInit = function() {
+    FB.init({
+      xfbml            : true,
+      version          : 'v10.0'
+    });
+  };
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+</body>
+</html>
+

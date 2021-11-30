@@ -1,0 +1,58 @@
+{% extends "mujib100/mujib100_base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block mujibcontent %}
+
+  <h1>{% trans "THE LIBERATOR" %}</h1>
+
+  {% for news in articles %}
+
+    <div class="catBox">
+      <div class="row">
+        <div class="col-md-3">
+          <a href="{{ news.get_absolute_url }}">
+            <img class="img-responsive img-thumbnail"
+                    {% if news.photos.first.image.file.url %}
+                 src="{{ news.photos.first.image.file.url }}"
+                    {% else %}
+                 src="{% static 'images/cat-img.png' %}"
+                    {% endif %}
+                 alt="cat"/>
+          </a>
+        </div>
+        <div class="col-md-9">
+          <h3><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h3>
+          {% if news.snippet %}
+            <p>{{ news.snippet|striptags|safe|truncatechars:350 }}</p>
+          {% else %}
+            <p>{{ news.body|striptags|safe|truncatechars:350 }}</p>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+    <ul class="pagination justify-content-end">
+      {% if articles.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ articles.previous_page_number }}" tabindex="-1">prev</a>
+        </li>
+      {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+      {% endif %}
+      {% for l in  articles.page_range %}
+        <li class="page-item {% if articles.number == l %} active {% endif %}">
+          <a class="page-link" href="?page={{ l }}">{{ l }}</a>
+        </li>
+      {% endfor %}
+      {% if articles.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ articles.next_page_number }}">next</a>
+        </li>
+      {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+    </ul>
+
+{% endblock mujibcontent %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load static %}
+{% load livetv_info %}
+
+{% block content %}
+    {% get_livetv_info as live_tv %}
+    <iframe width="725" height="360" src="{{ live_tv.embedded_link }}" frameborder="0" allowfullscreen></iframe>
+{% endblock content %}

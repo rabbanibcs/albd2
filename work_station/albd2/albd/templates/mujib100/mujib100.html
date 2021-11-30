@@ -1,0 +1,277 @@
+{% extends "100.html" %}
+{% load static %}
+{% load i18n %}
+{% load thumbnail %}
+{% load celebration_updates %}
+{% load opinion_updates %}
+
+{% block content %}
+
+  {% include "elements/banner.html" %}
+
+  <!-- Home -->
+  <div class="imageGallery">
+    <div class="row">
+      <div class="col-md-7">
+        <div class="bigThumbBox">
+          <div class="video-container">
+            {% if top_news.first.content_type.slug == 'video' %}
+              <iframe width="100%" height="360"
+                      src="{{ top_news.first.video_url }}" frameborder="0"
+                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen></iframe>
+            {% else %}
+              <img class="img-responsive" src="{{ top_news.first.photos.first.image.file.url }}"
+                   alt="img">
+            {% endif %}
+          </div>
+          <h2><a href="{{ top_news.first.get_absolute_url }}">{{ top_news.first.title }}</a></h2>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <!--Thumbnail column 1 -->
+        <div class="row">
+          {% for news in top_news|slice:"1:3" %}
+            <div class="col-md-6 col-xs-6">
+              <div class="smallThumbBox">
+                <div class="thumbImage">
+                                    <span class="minutes"><i
+                                            class="fa fa-clock-o"></i> {{ news.time_span }} {% trans "ago" %}</span>
+                  <a class="thumbIcon" href="#"><i
+                          class="fa {{ news.icon_class }}"></i></a>
+                  <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                       alt="image">
+                  <div class="catName"><a
+                          href="">{{ news.sub_category|title }}</a></div>
+                </div>
+                <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <!--/End Thumbnail column 1 -->
+
+        <!--Thumbnail column 2 -->
+        <div class="row">
+          {% for news in top_news|slice:"3:" %}
+            <div class="col-md-6 col-xs-6">
+              <div class="smallThumbBox">
+                <div class="thumbImage">
+                                    <span class="minutes"><i
+                                            class="fa fa-clock-o"></i> {{ news.time_span }} {% trans "ago" %}</span>
+                  <a class="thumbIcon" href="#"><i
+                          class="fa {{ news.icon_class }}"></i></a>
+                  <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                       alt="video">
+                  <div class="catName"><a
+                          href="">{{ news.sub_category|title }}</a></div>
+                </div>
+                <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <!--/End Thumbnail column 2 -->
+
+      </div>
+    </div>
+  </div>
+  <!--/..End  Home -->
+
+  <!-- Section Start -->
+  <div class="gallery">
+    <div class="row">
+      <div class="col-md-6">
+        <h1><a href="{% url 'mujib100:liberator' %}">{% trans "THE LIBERATOR" %}</a></h1>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="bigThumbBox">
+              <div class="video-container">
+                <img class="img-responsive" src="{{ liberator.first.photos.first.image.file.url }}"
+                     alt="img">
+              </div>
+              <h2><a href="{{ liberator.first.get_absolute_url }}">{{ liberator.first.title }}</a></h2>
+            </div>
+          </div>
+          {% for item in liberator|slice:"1:" %}
+            <div class="col-md-12">
+              <div class="col-md-6 col-xs-6">
+                <div class="smallThumbBox">
+                  <div class="thumbImage">
+                    <a class="thumbIcon" href="#"><i
+                            class="fa {{ item.icon_class }}"></i></a>
+                    <img class="img-responsive" src="{{ item.photos.first.image.file.url }}"
+                         alt="image">
+                    <div class="catName"><a href="{% url 'mujib100:liberator' %}">{% trans 'Liberator' %}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-6">
+                <h4><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h4>
+                {% if item.snippet %}
+                  <p>{{ item.snippet|striptags|safe|truncatechars:50 }}</p>
+                {% else %}
+                  <p>{{ item.body|striptags|safe|truncatechars:50 }}</p>
+                {% endif %}
+
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h1><a href="{% url 'mujib100:history' %}">{% trans "THE HISTORY" %}</a></h1>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="bigThumbBox">
+              <div class="video-container">
+                <img class="img-responsive" src="{{ history.first.photos.first.image.file.url }}"
+                     alt="img">
+                <h2><a href="{{ history.first.get_absolute_url }}">{{ history.first.title }}</a></h2>
+              </div>
+            </div>
+          </div>
+          {% for item in history|slice:"1:" %}
+            <div class="col-md-12">
+              <div class="col-md-6 col-xs-6">
+                <div class="smallThumbBox">
+                  <div class="thumbImage">
+                    <a class="thumbIcon" href="#"><i
+                            class="fa {{ item.icon_class }}"></i></a>
+                    <img class="img-responsive" src="{{ item.photos.first.image.file.url }}"
+                         alt="image">
+                    <div class="catName"><a href="{% url 'mujib100:history' %}">{% trans 'History' %}</a></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-6">
+                <h4><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h4>
+                {% if item.snippet %}
+                  <p>{{ item.snippet|striptags|safe|truncatechars:50 }}</p>
+                {% else %}
+                  <p>{{ item.body|striptags|safe|truncatechars:50 }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Section End -->
+
+  <!-- Video Start -->
+  <div class="imageGallery mt30">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="bigThumbBox">
+          <div class="video-container">
+            <iframe width="100%" height="360"
+                    src="{{ video.first.video_url }}" frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+          </div>
+          <h2><a href="{{ video.first.get_absolute_url }}">{{ video.first.title }}</a></h2>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <!--Thumbnail column 1 -->
+        <div class="row">
+          {% for news in video|slice:"1:3" %}
+            <div class="col-md-6 col-xs-6">
+              <div class="smallThumbBox">
+                <div class="thumbImage">
+                                    <span class="minutes"><i
+                                            class="fa fa-clock-o"></i> {{ news.time_span }} {% trans "ago" %}</span>
+                  <a class="thumbIcon" href="#"><i
+                          class="fa {{ news.icon_class }}"></i></a>
+                  <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                       alt="image">
+                  <div class="catName">
+                    <a href="{% url 'mujib100:video' %}">{{ news.sub_category|title }}</a></div>
+                </div>
+                <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <!--/End Thumbnail column 1 -->
+
+        <!--Thumbnail column 2 -->
+        <div class="row">
+          {% for news in video|slice:"3:" %}
+            <div class="col-md-6 col-xs-6">
+              <div class="smallThumbBox">
+                <div class="thumbImage">
+                                    <span class="minutes"><i
+                                            class="fa fa-clock-o"></i> {{ news.time_span }} {% trans "ago" %}</span>
+                  <a class="thumbIcon" href="#"><i
+                          class="fa {{ news.icon_class }}"></i></a>
+                  <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                       alt="video">
+                  <div class="catName">
+                    <a href="{% url 'mujib100:video' %}">{{ news.sub_category|title }}</a></div>
+                </div>
+                <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <!--/End Thumbnail column 2 -->
+
+      </div>
+    </div>
+  </div>
+  <!-- Video End -->
+
+   <div class="imageGallery">
+    <div class="row">
+      <div class="col-md-6">
+        <h1><a href="{% url 'mujib100:celebration' %}">{% trans "THE CELEBRATION" %}</a></h1>
+        {% get_celebration_updates as celebration %}
+        {% for news in celebration %}
+          <div class="col-md-6 col-xs-6">
+            <div class="smallThumbBox">
+              <div class="thumbImage">
+                                    <span class="minutes"><i
+                                            class="fa fa-clock-o"></i> {{ news.time_span }} {% trans "ago" %}</span>
+                <a class="thumbIcon" href="#"><i
+                        class="fa {{ news.icon_class }}"></i></a>
+                <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                     alt="image">
+                <div class="catName"><a
+                        href="">{{ news.sub_category|title }}</a></div>
+              </div>
+              <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="col-md-6">
+        <h1><a href="{% url 'mujib100:opinion' %}">{% trans "THE OPINION" %}</a></h1>
+        {% get_opinion_updates as opinions %}
+        {% for news in opinions %}
+          <div class="col-md-6 col-xs-6">
+            <div class="smallThumbBox">
+              <div class="thumbImage">
+                                    <span class="minutes"><i
+                                            class="fa fa-clock-o"></i> {{ news.time_span }} {% trans "ago" %}</span>
+                <a class="thumbIcon" href="#"><i
+                        class="fa {{ news.icon_class }}"></i></a>
+                <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                     alt="image">
+                <div class="catName"><a
+                        href="">{{ news.sub_category|title }}</a></div>
+              </div>
+              <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+
+{% endblock content %}

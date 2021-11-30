@@ -1,0 +1,153 @@
+{% extends 'mujib100/base.html' %}
+{% load i18n %}
+{% load comments %}
+{% load widget_tweaks %}
+{% load thumbnail %}
+{% load hitcount_tags %}
+{% load humanize %}
+{% load latest_news %}
+{% load photo_gallery %}
+{% load video_gallery %}
+
+{% block content %}
+    <div class="row galleryDetails">
+        <div class="col-md-9"> <!-- Start left side -->
+          <h1>{{ object.title }}</h1>
+
+            <div class="publishDate"><!--publishDate -->
+{#                <div class="printBtn pull-right">#}
+{#                    <div class="fb-share-button" data-href="{{ object.get_absolute_url }}"#}
+{#                         data-layout="button_count"  data-mobile-iframe="true">#}
+{#                        <a class="fb-xfbml-parse-ignore" target="_blank"#}
+{#                           href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a>#}
+{#                    </div>#}
+{#                    <a class="twitter-share-button"#}
+{#                           href="https://twitter.com/intent/tweet?text={{ object.title }}">#}
+{#                            Tweet</a>#}
+{#                    <div class="g-plus" data-action="share" data-height="15"></div>#}
+{#                    <a href="#"><i class="fa fa-youtube"></i></a>#}
+{#                    <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>#}
+{#                    <script type="IN/Share" data-url="{{ object.get_absolute_url }}" data-counter="right"></script>#}
+{#                </div>#}
+
+
+                <p class="pull-right adj">
+                    {% get_hit_count for object as total_view %}
+                    <i class="fa fa-eye"></i> <span class="text-red">{{ total_view }}</span>
+                </p>
+
+                Published on {{ object.publish_date|date:"jS F Y H:i"  }}
+
+            </div><!--/End publishDate -->
+
+          <div id="full-content">
+            <div class="detailsImage">
+                <iframe width="100%" height="360"
+                        src="{{ object.video_url }}" frameborder="0" gesture="media"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        __idm_id__="683216897"  allowfullscreen></iframe>
+            </div>
+            {{ object.body|safe }}
+          </div>
+
+          <!-- Tags area -->
+            <div class="tags">
+                <h4>TAGS: </h4>
+                {% for tag in object.tags.all %}
+                    <a href="{% url 'articles:taggit_articles' slug=tag.slug %}" target="_blank">{{ tag.name }}</a>,
+                {% endfor %}
+            </div>
+            <div class="addthis_inline_follow_toolbox"></div>
+
+            <!-- /End Tags area -->
+            {% if object.allow_comments %}
+
+                <div class="fb-comments" data-width="100%" data-href="{{ request.build_absolute_uri }}#configurator"
+                     data-numposts="5"></div>
+            {% endif %}
+
+        </div><!-- //End left side -->
+        <div class="col-md-3">
+            <!-- Start Right side -->
+
+            <!-- Image Gallery -->
+            <h2 class="contentTitle noMargin">{% trans "In picture" %}</h2>
+
+            <div class="rightGallery"> <!-- Start Right Gallery -->
+
+                {% get_photo_gallery as photo_gallery %}
+                {% for url, news in photo_gallery.items %}
+                    {% if forloop.first %}
+                        <div class="detailsImage">
+                            <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                                 alt="Details Image">
+                            <div class="caption">{{ news.title }}</div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div class="row thumbViewArea">
+                    {% for url, news in photo_gallery.items %}
+                        {% if forloop.counter > 1 %}
+                            <div class="col-sm-6 col-xs-6">
+                                <div class="smallThumbBox">
+                                    <div class="thumbImage">
+                                        <a class="thumbIcon" href="#"><i class="fa {{ news.icon_class }}"></i></a>
+                                        <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                                             alt="image">
+                                    </div>
+                                    <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div><!-- //EndImage Gallery -->
+
+
+            </div><!-- //End Right Gallery -->
+
+
+            <!-- Video Gallery -->
+
+            <h2 class="contentTitle noMargin">{% trans "Video" %}</h2>
+
+            <div class="rightGallery"><!-- Start Right Gallery -->
+
+                {% get_video_gallery as video_gallery %}
+                {% for url, news in video_gallery.items %}
+                    {% if forloop.first %}
+
+                        <div class="detailsImage">
+                            <iframe width="100%" src="{{ news.video_url }}"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen __idm_id__="683216897"></iframe>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div class="row thumbViewArea">
+                    {% for url, news in video_gallery.items %}
+                        {% if forloop.counter > 1 %}
+                            <div class="col-sm-6 col-xs-6">
+                                <div class="smallThumbBox">
+                                    <div class="thumbImage">
+                                        <a class="thumbIcon" href="#"><i class="fa {{ news.icon_class }}"></i></a>
+                                        <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                                             alt="image">
+                                    </div>
+                                    <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <!-- End Gallery -->
+
+            </div><!-- //End Right Gallery -->
+
+        </div><!-- //..End  Right side -->
+    </div>
+
+{% endblock content %}

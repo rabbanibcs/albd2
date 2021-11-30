@@ -1,0 +1,254 @@
+{% extends "base2.html" %}
+{% load static %}
+{% load i18n %}
+{% load thumbnail %}
+{% load livetv_info %}
+{% load top_banners %}
+
+{% get_main_banners as banners %}
+
+{% block content %}
+  <!-- Home top contents -->
+  <div class="video-gallery-area">
+    <div class="container">
+      <div class="imageGallery borderNone m0 p0">
+        <div class="row">
+          <div class="col-md-7">
+            <div class="bigThumbBox">
+              <div class="video-container">
+                {% if top_news.first.content_type.slug == 'video' %}
+                  <iframe width="100%" height="360"
+                          src="{{ top_news.first.video_url }}" frameborder="0"
+                          allowfullscreen="" __idm_id__="683216897"></iframe>
+                {% else %}
+                  <img class="img-responsive" src="{{ top_news.first.photos.first.image.file.url }}"
+                       alt="video">
+                {% endif %}
+              </div>
+              <h2><a href="{{ top_news.first.get_absolute_url }}">{{ top_news.first.title }}</a></h2>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <!--Thumbnail column 1 -->
+            <div class="row">
+              {% for news in top_news|slice:"1:3" %}
+                <div class="col-md-6 col-xs-6">
+                  <div class="smallThumbBox">
+                    <div class="thumbImage">
+                                    <span class="minutes"><i
+                                            class="fa fa-clock-o"></i> {{ news.time_span }} {% trans "ago" %}</span>
+                      <a class="thumbIcon" href="#"><i
+                              class="fa {{ news.icon_class }}"></i></a>
+                      <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                           alt="video">
+                      <div class="catName"><a
+                              href="{{ news.category.get_url }}">{{ news.category.label }}</a></div>
+                    </div>
+                    <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+            <!--/End Thumbnail column 1 -->
+            <!--Thumbnail column 2 -->
+            <div class="row">
+              {% for news in top_news|slice:"3:" %}
+                <div class="col-md-6 col-xs-6">
+                  <div class="smallThumbBox">
+                    <div class="thumbImage">
+                                    <span class="minutes"><i
+                                            class="fa fa-clock-o"></i> {{ news.time_span }} {% trans "ago" %}</span>
+                      <a class="thumbIcon" href="#"><i
+                              class="fa {{ news.icon_class }}"></i></a>
+                      <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                           alt="video">
+                      <div class="catName"><a
+                              href="{{ news.category.get_url }}">{{ news.category.label }}</a></div>
+                    </div>
+                    <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+            <!--/End Thumbnail column 2 -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/..End  home top contents -->
+  <div class="container">
+    {% if banners|length > 1 %}
+    <div class="staticBanner">
+      <img class="img-responsive w100" src="{{ banner.1.image.file.url }}" alt="banner"/>
+    </div>
+    {% endif %}
+    <!--Content Area-->
+    <div class="row">
+      <div class="col-md-9">
+        <!--Category Gallery-->
+        <div class="row row-eq-height">
+          <div class="col-md-6 h100">
+            <div class="cat-gallery" data-url="{% url 'categories:items' 'news' %}" data-limit="3">
+              loading..
+            </div>
+          </div>
+          <div class="col-md-6 h100">
+            <div class="cat-gallery" data-url="{% url 'categories:items' 'party-news' %}" data-limit="3">
+              loading..
+            </div>
+          </div>
+        </div>
+
+        <!--Catergory Video Gallery-->
+        <div class="cat-video-gallery">
+          <h2><a href="{% url 'articles:content-type-articles' 'video' %}">{% trans "Video Gallery" %}</a></h2>
+            <div class="row video-gallery" data-url="{% url 'categories:typed_items' 'video' %}" data-limit="5">
+          </div>
+        </div>
+        {% if banners|length > 2 %}
+        <div class="staticBanner">
+          <img class="img-responsive w100" src="{{ banner.2.image.file.url }}" alt="banner"/>
+        </div>
+        {% endif %}
+
+        <!-- Category Gallery -->
+        <div class="row row-eq-height">
+          <div class="col-md-6 h100">
+            <div class="cat-gallery" data-url="{% url 'categories:items' 'special-report' %}" data-limit="3">
+            </div>
+          </div>
+          <div class="col-md-6 h100">
+            <div class="cat-gallery" data-url="{% url 'categories:items' 'special-article' %}" data-limit="3">
+            </div>
+          </div>
+        </div>
+
+        <!-- Catergory Video Gallery -->
+        <div class="cat-video-gallery">
+          <h2><a href="{% url 'articles:content-type-articles' 'photo' %}">{% trans "Image Gallery" %}</a></h2>
+          <div class="row photo-gallery" data-url="{% url 'categories:typed_items' 'photo' %}" data-limit="5" >
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <!--Side bar-->
+        <div class="side-bar">
+          <div class="right-box">
+            <div class="box-title">Live</div>
+            <div class="video-container">
+              {% get_livetv_info as live_tv %}
+              <iframe width="100%" height="180" src="{{ live_tv.embedded_link }}" frameborder="0"
+                      allowfullscreen __idm_id__="683216897"></iframe>
+            </div>
+          </div>
+          <div class="right-box">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#facebook" aria-controls="facebook" role="tab"
+                                                        data-toggle="tab">{% trans "Facebook" %}</a></li>
+              <li role="presentation"><a href="#twitter" aria-controls="twitter" role="tab"
+                                         data-toggle="tab">{% trans "Twitter" %}</a>
+
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content socialContent  bg-white">
+              <div role="tabpanel" class="tab-pane fade in active" id="facebook">
+                <div class="fb-page" data-href="https://www.facebook.com/awamileague.1949/" data-tabs="timeline"
+                     data-small-header="true" data-adapt-container-width="true" data-hide-cover="false"
+                     data-show-facepile="false" data-height="410">
+                  <blockquote cite="https://www.facebook.com/awamileague.1949/" class="fb-xfbml-parse-ignore">
+                    <a href="https://www.facebook.com/awamileague.1949/">{% trans "Bangladesh Awami League" %}</a>
+                  </blockquote>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane fade" id="twitter">
+                <a class="twitter-timeline" data-lang="en" data-height="410" data-dnt="true"
+                   data-link-color="#981CEB"
+                   href="https://twitter.com/albd1971">{% trans "Tweets by Awamileage" %}</a>
+                <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+              </div>
+            </div>
+            <!-- /...End Tab panes -->
+          </div>
+
+          <!--Views & opinion-->
+          <div class="right-box">
+            <div class="box-title">{% trans "Views & Opinions" %}</div>
+            <div class="bg-blue">
+              {% for item in view_opinions %}
+                <div class="row {% if not forloop.first %}mt10 {% endif %} {% if not forloop.last %} addBorder {% endif %}">
+                  <div class="col-xs-4">
+                    <img class="img-responsive" src="{{ item.photos.first.image.file.url }}" alt="...">
+                  </div>
+                  <div class="col-xs-8">
+                    <h4 class="f14"><a href="{{ item.get_absolute_url }}">
+                      {% if item.short_title %}
+                        {{ item.short_title }}
+                      {% else %}
+                        {{ item.title }}
+                      {% endif %}
+                    </a></h4>
+                  </div>
+                </div>
+              {% endfor %}
+              <div class="readmore text-right"><a
+                      href="{% url "categories:detail" 'views-opinion' %}">{% trans "View more" %}..</a></div>
+            </div>
+          </div>
+
+          <!--Publication-->
+          <div class="right-box">
+            <div class="box-title">{% trans 'Publications' %}</div>
+            <div class="bg-gray">
+              {% for book in publications %}
+                <div class="row {% if not forloop.first %}mt10{% endif %} {% if not forloop.last %} addBorder {% endif %} ">
+                  <div class="col-xs-4">
+                    <img class="img-responsive" src="{{ book.cover_page.file.url }}" alt="...">
+                  </div>
+                  <div class="col-xs-8">
+                    <h4 class="f16"><a href="{{ book.url }}">{{ book.title }}</a></h4>
+                    <p class="f13">{{ book.short_description|striptags|safe|truncatechars:150  }}</p>
+                  </div>
+                </div>
+              {% endfor %}
+              <div class="readmore text-right"><a href="{% url 'publications' %}">{% trans "View more" %}..</a></div>
+            </div>
+          </div>
+
+          <!--Newsletter-->
+          <div class="right-box">
+            <div class="box-title bg-green">{% trans "Newsletter" %}</div>
+            <div class="bg-gray">
+              {% for letter in newsletters %}
+              <div class="row {% if not forloop.last %} addBorder {% endif %}">
+
+                <div class="col-xs-4">
+                  <a href="{{ letter.link }}">
+                  <img class="img-responsive" src="{% thumbnail letter.thumbnail.file 140x180 crop %}" alt="...">
+                  </a>
+                </div>
+                <div class="col-xs-8">
+                  <h4 class="f16"><a href="{{ letter.link }}">{{ letter.title}}</a></h4>
+                </div>
+              </div>
+              <div class="readmore text-right"><a class="{% url 'newsletter' %}" href="">{% trans "View more" %}..</a></div>
+            </div>
+            {% endfor %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+{% block extra_js %}
+  $('.cat-gallery, .photo-gallery, .video-gallery').each(function(idx, elem){
+      var data = $(elem).data();
+      var cat_url = data.url + '?limit=' + data.limit;
+      $(elem).html('Loading....');
+      $(elem).load(cat_url);
+  });
+{% endblock %}

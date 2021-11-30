@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class="row">
+
+
+        <div class="col-md-9"> <!-- Article area -->
+
+            <h1>{{ object.title }}</h1>
+
+            <div class="publishDate"><!--publishDate -->
+{#                <div class="printBtn pull-right">#}
+{#                    <a href="#"><i class="fa fa-facebook"></i></a>#}
+{#                    <a href="#"><i class="fa fa-twitter"></i></a>#}
+{#                    <a href="#"><i class="fa fa-google-plus"></i></a>#}
+{#                    <a href="#"><i class="fa fa-youtube"></i></a>#}
+{#                    <a href="#"><i class="fa fa-linkedin"></i></a>#}
+{#                    <a href="#"><i class="fa fa-print"></i> </a>#}
+{#                </div>#}
+{##}
+{##}
+{#                <p class="pull-right adj">#}
+{#                    <i class="fa fa-facebook"></i> <span class="text-red">5k</span>#}
+{#                    <i class="fa fa-twitter"></i> <span class="text-red">5k</span>#}
+{#                    <i class="fa fa-eye"></i> <span class="text-red">10k</span>#}
+{#                </p>#}
+
+                Published on {{ object.published_date|date:"F j, Y" }}
+
+            </div><!--/End publishDate -->
+
+        {{ object.body|safe }}
+        </div>
+    </div>
+{% endblock content %}

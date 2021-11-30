@@ -1,0 +1,23 @@
+{% load i18n %}
+{% load thumbnail %}
+{% load top_banners %}
+
+{% get_main_banners as banners %}
+
+{% if banners|length > 0 %}
+    <!-- banner -->
+    <div class="page-banner">
+        <a href="{{ banners.0.link }}">
+            <img class="img-responsive" src="{{ banners.0.image.file.url }}" alt="Page Banner">
+            {% if banners.0.show_instruction %}
+                <div class="page-banner-content">
+                    <button class="btn btn-primary">{{ banners.0.title }}</button>
+                    <h1>{{ banners.0.instruction }}</h1>
+                    <button class="btn btn-primary"><a href="{{ banners.0.link }}" target="_blank">{% trans "More" %}</a>
+                    </button>
+                </div>
+            {% endif %}
+        </a>
+    </div>
+    <!-- /.End banner -->
+{% endif %}

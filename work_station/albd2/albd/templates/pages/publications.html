@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load thumbnail %}
+
+{% block content %}
+      <h1>{% trans "Publications" %}</h1>
+
+    <div class="row">
+    {% for book in publications %}
+        <!--Start Team box-->
+        <div class="col-md-2 col-sm-2">
+            <div class="panel panel-default">
+                <div class="panel-body center"><a href="{{ book.url }}"><img class="img-responsive"
+                                               src="{% thumbnail book.cover_page.file 140x180 crop  %}"
+                                                                               alt="{{ book.title }}"></a></div>
+                <div class="panel-footer panel-footer-ext">
+                    <a href="{{ book.url }}">{{ book.title}}</a>
+                </div>
+            </div>
+
+        </div>
+        <!--//End Team box-->
+    {% endfor %}
+    </div>
+
+{% endblock content %}

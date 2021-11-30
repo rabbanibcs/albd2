@@ -1,0 +1,35 @@
+{% extends "ajax.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+  <h2 class="cat-title">{{ label_title }}<a class="pull-right f13"
+                                                 href="{{ object.get_url }}">{% trans "View more" %}</a>
+  </h2>
+  <div class="smallThumbBox">
+    <div class="thumbImage">
+      <a href="{{ items.0.get_absolute_url }}"><img class="img-responsive" src="{{ items.0.photos.first.image.file.url }}" alt="video"></a>
+    </div>
+    <p class="author"><i class="fa fa-calendar"></i> {{ items.0.publish_date }}</p>
+    <h4><a href="{{ items.0.get_absolute_url }}">{{ items.0.title }}</a></h4>
+    <p>{{ items.0.short_description }}</p>
+  </div>
+  <ul class="gallery-list">
+    {% for item in items %}
+      {% if forloop.counter > 1 %}
+        <li>
+          <div class="row">
+            <div class="col-md-4">
+              <img class="img-responsive" src="{{ item.photos.first.image.file.url }}"
+                   alt="{{ item.content_type.label }}">
+            </div>
+            <div class="col-md-8">
+              <h4 class="f14"><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h4>
+              <p class="f13">{{ item.short_description }}</p>
+            </div>
+          </div>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endblock %}

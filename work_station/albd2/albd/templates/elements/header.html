@@ -1,0 +1,232 @@
+{% load i18n %}
+{% load static %}
+{% load category_page_menu %}
+{% load category_news %}
+{% load thumbnail %}
+{% load top_banners %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<div class="desktopView hidden-xs navbar-fixed-top">
+
+  <!-- Header Section -->
+  <div id="headerSection">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          {% static "" as base_url %}
+          <div class="logo"><a href="{% url 'home' %}"><img class="img-responsive"
+                                                            src="{{base_url}}images/logo-{{ LANGUAGE_CODE }}.png"
+                                                            alt="logo"></a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="extBox">
+            {% get_static_banners as banners %}
+            {% for banner in banners %}
+              <a href="{{ banner.link }}"><img class="pull-right" src="{% thumbnail banner.image.file 460x60 crop %}"></a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Top Menu Section -->
+    <div class="topMenu clearfix">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+
+            <!--Main Menu -->
+            <div id="mainMenu">
+              <nav class="navbar navbar-default">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                          data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand hidden-xs" href="{% url 'home' %}"><i class="fa fa-home"></i></a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                         aria-haspopup="true" aria-expanded="false">{% trans 'Party' %}<span
+                        class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a href="https://publication.albd.org/Journey-of-Awami-League-1949-2016/" target="_blank"> {% trans 'History' %}</a>
+                        </li>
+                      <li>
+
+                            {% ifequal LANGUAGE_CODE 'bn' %}
+                                <a
+                                href="/bn/pages/15/শেখ-হাসিনা"> {% trans "Sheikh Hasina" %}
+                              </a>
+
+                            {%  endifequal %}
+
+                            {% ifequal LANGUAGE_CODE 'en' %}
+                              <a
+                                href="/pages/16/Sheikh-Hasina"> {% trans "Sheikh Hasina" %}
+                              </a>
+                            {% endifequal %}
+                        </li>
+                        <li>
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% ifequal LANGUAGE_CODE 'bn' %}
+                                <a
+                                href="/bn/pages/1/বঙ্গবন্ধু-শেখ-মুজিবুর-রহমান"> {% trans 'Bangabandhu Sheikh Mujibur Rahman' %}
+                              </a>
+
+                            {%  endifequal %}
+
+                            {% ifequal LANGUAGE_CODE 'en' %}
+                              <a
+                                href="/pages/7/Bangabandu-Sheikh-Mujibur-Rahman"> {% trans 'Bangabandhu Sheikh Mujibur Rahman' %}
+                              </a>
+                            {% endifequal %}
+                        </li>
+{#                         <li><a href="{% url 'president' %}">{% trans 'President' %}</a></li>#}
+{#                          <li role="separator" class="divider"></li> #}
+                        <li>
+                          <a href="http://publication.albd.org/Declaration-and-Constitution/2019/albd_constitution_v2019.pdf" target="_blank">{% trans 'Declaration & Constitution' %}</a>
+                        </li>
+                        <li>
+                          {% ifequal LANGUAGE_CODE 'en' %}
+                          <a href="{% url 'pages:detail' 'organization' %}">{% trans 'Organization' %}</a>
+                          {% endifequal %}
+                          {% ifequal LANGUAGE_CODE 'bn' %}
+                          <a href="{% url 'pages:detail' 'organization-bangla' %}">{% trans 'Organization' %}</a>
+                          {% endifequal %}
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                          {% ifequal LANGUAGE_CODE 'en' %}
+                            <a href="{% url 'pages:detail' 'contact-en' %}">{% trans 'Contact Us' %}</a>
+                          {% endifequal %}
+                          {% ifequal LANGUAGE_CODE 'bn' %}
+                            <a href="{% url 'pages:detail' 'contact-bn' %}">{% trans 'Contact Us' %}</a>
+                          {% endifequal %}
+                        </li>
+                        <li>
+                          <a href="https://www.facebook.com/awamileague.1949/" target="_blank">{% trans 'Facebook' %}</a>
+                        </li>
+                        <li>
+                          <a href="https://twitter.com/albd1971" target="_blank">{% trans 'Twitter' %}</a>
+                        </li>
+                        <li>
+                          <a href="https://www.youtube.com/user/myalbd/" target="_blank">{% trans 'Youtube' %}</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                         aria-haspopup="true" aria-expanded="false">{% trans 'Updates' %}<span
+                        class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a href="{% url 'categories:detail' 'news' %}">{% trans 'News' %}</a>
+                        </li>
+                        <li>
+                          <a href="{% url 'categories:detail' 'party-news' %}">{% trans 'Party News' %}</a>
+                        </li>
+                        <li>
+                          <a href="{% url 'categories:detail' 'special-article' %}">{% trans 'Special Articles' %}</a>
+                        </li>
+                        <li>
+                          <a href="{% url 'categories:detail' 'special-report' %}">{% trans 'Special Reports' %}</a>
+                        </li>
+                        <li>
+                          <a href="{% url 'categories:detail' 'views-opinion' %}">{% trans 'Opinions' %}</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{% url 'newsletter' %}">{% trans 'Newsletter' %}</a>
+                        </li>
+                        <li>
+                          <a href="{% url 'categories:detail' 'press-release' %}">{% trans 'Press Release' %}</a>
+                        </li>
+                        <li>
+                          <a href="{% url 'publications' %}">{% trans 'Publications' %}</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                          <a href="{% url 'categories:detail' 'gallery' %}">{% trans 'Gallery' %}</a>
+                        </li>
+                        <li>
+                          <a href="https://bnpjamaatviolence.albd.org/" target="_blank">{% trans 'BNP-JAMAAT Violence' %}</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                         aria-haspopup="true" aria-expanded="false">{% trans 'Get Involved' %}<span
+                        class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="{% url 'register' %}">{% trans 'Join Us' %}</a>
+                      </ul>
+
+                    </li>
+                  {% ifequal LANGUAGE_CODE 'bn' %}
+                    <li>
+                        <a href="{% url 'categories:detail' 'decade-of-development' %}">{% trans 'Decade of development' %}</a>
+                    </li>
+                  {% endifequal %}
+                  </ul>
+
+                </div><!-- /.navbar-collapse -->
+
+              </nav>
+            </div>  <!--/.. End Main Menu -->
+
+
+          </div>
+
+          <div class="col-md-3">
+            <ul class="rightMenuIcon pull-right clearfix">
+              <li><a class="allSectionBtn"
+                     href="javascript:void(0);">{% trans 'All Sections' %}<em></em></a></li>
+              <li><a href="javascript:void(0);" class="search-icon sbtn searchBtn"></a></li>
+              <li><a href="{% url 'livetv' %}"><span class="livetv"></span></a></li>
+            </ul>
+
+          </div>
+        </div>
+
+        <!-- All Menu Area -->
+        <div class="allSection" style="display: none;">
+          <div class="container">
+            <ul class="socialIcon">
+              <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+              <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+              <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+              <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+            </ul>
+          </div>
+          <div class="sub-nav clearfix">
+            <div class="container">
+              <ul class="h-links clearfix">
+                <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+                {# Category news menu #}
+                {% get_category_news as category_news %}
+                {% for url, name in category_news.items %}
+                  <li><a href="{{ url }}">{{ name }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div><!-- End All Menu Area -->
+
+      </div>
+    </div>
+    <!-- /..End Top Menu Section -->
+  </div> <!--/End Header Section -->
+
+</div> <!-- Desktop view -->
+

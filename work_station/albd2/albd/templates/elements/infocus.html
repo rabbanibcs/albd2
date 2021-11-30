@@ -1,0 +1,25 @@
+{% load static %}
+{% load i18n %}
+{% load focus_news %}
+
+<!-- Focus Section -->
+<div class="focusSection container">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="focus">{% trans 'IN FOCUS' %}</div>
+        </div>
+        <div class="col-md-10">
+            <div id="newsTicker">
+                <ul>
+                    {% get_focus_news as news_in_focus %}
+                    {% for url, title in news_in_focus.items %}
+                        <li><a href="{{ url }}">{{ title }}</a></li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- /..End Focus Section -->

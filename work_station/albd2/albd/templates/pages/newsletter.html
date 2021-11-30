@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load thumbnail %}
+
+{% block content %}
+    <h1>{% trans "Newsletters" %}</h1>
+
+    <div class="row">
+    {% for newsletter in newsletters %}
+        <!--Start Team box-->
+        <div class="col-md-2 col-sm-2">
+            <div class="panel panel-default">
+                <div class="panel-body"><a href="{{ newsletter.link }}"><img class="img-responsive"
+                                               src="{% thumbnail newsletter.thumbnail.file 140x180 crop  %}"
+                                                                               alt="{{ newsletter.title }}"></a></div>
+                <div class="panel-footer panel-footer-ext">
+                    <a href="{{ newsletter.link }}">{{ newsletter.title}}</a>
+                </div>
+            </div>
+
+        </div>
+        <!--//End Team box-->
+    {% endfor %}
+    </div>
+{% endblock content %}

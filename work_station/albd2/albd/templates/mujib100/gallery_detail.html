@@ -1,0 +1,112 @@
+{% extends "100.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+    <h1>{% trans "Gallery" %} </h1>
+
+    <section>
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="contentTitle mb10">{% trans "Video Gallery" %}</h2>
+                <div class="detail-gallery hidden-xs">
+                    <div class="row">
+                        {% for item in videos %}
+                            <div class="col-md-6">
+                                <div class="smallThumbBox">
+                                    <div class="thumbImage">
+                                            <span class="minutes"><i
+                                                    class="fa fa-clock-o"></i> {{ item.time_span }} {% trans "ago" %}</span>
+                                        <a class="thumbIcon" href=""><i class="fa fa-play-circle"></i></a>
+                                        {% if item.video_url %}
+                                                <iframe width="100%" height="250"
+                                                        src="{{ item.video_url }}" frameborder="0"
+                                                        allowfullscreen="" __idm_id__="683216897"></iframe>
+                                            {% else %}
+                                                 <img class="img-responsive" src="{{ item.videos.first.image.file.url }}" alt="video">
+                                            {% endif %}
+                                    </div>
+                                    <h2><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h2>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="detail-gallery-mobile visible-xs">
+                    <div class="row">
+                        {% for item in videos %}
+                            <div class="col-md-12">
+                                <div class="smallThumbBox">
+                                    <div class="thumbImage">
+                                            <span class="minutes"><i
+                                                    class="fa fa-clock-o"></i> {{ item.time_span }} {% trans "ago" %}</span>
+                                        <a class="thumbIcon" href=""><i class="fa fa-play-circle"></i></a>
+                                        {% if item.video_url %}
+                                                <iframe width="100%" height="250"
+                                                        src="{{ item.video_url }}" frameborder="0"
+                                                        allowfullscreen="" __idm_id__="683216897"></iframe>
+                                            {% else %}
+                                                 <img class="img-responsive" src="{{ item.videos.first.image.file.url }}" alt="video">
+                                            {% endif %}
+                                    </div>
+                                    <h2><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h2>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h2 class="contentTitle mb10">{% trans "Image Gallery" %}</h2>
+                <div class="detail-gallery hidden-xs">
+                    <div class="row">
+                        {% for item in photos %}
+                            <div class="col-md-6">
+                                <div class="smallThumbBox">
+                                    <div class="thumbImage">
+                                            <span class="minutes"><i
+                                                    class="fa fa-clock-o"></i> {{ item.time_span }} {% trans "ago" %}</span>
+                                        <span class="count">+{{ item.photos.count }}</span>
+                                        <a class="thumbIcon" href="#"><i class="fa fa-camera"></i></a>
+                                        <img class="img-responsive" src="{{ item.photos.first.image.file.url }}"
+                                             alt="image">
+                                    </div>
+                                    <h2><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h2>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+                <div class="detail-gallery-mobile visible-xs">
+                    <div class="row">
+                        {% for item in photos %}
+                            <div class="col-md-12">
+                                <div class="smallThumbBox">
+                                    <div class="thumbImage">
+                                            <span class="minutes"><i
+                                                    class="fa fa-clock-o"></i> {{ item.time_span }} {% trans "ago" %}</span>
+                                        <span class="count">+{{ item.photos.count }}</span>
+                                        <a class="thumbIcon" href="#"><i class="fa fa-camera"></i></a>
+                                        <img class="img-responsive" src="{{ item.photos.first.image.file.url }}"
+                                             alt="image">
+                                    </div>
+                                    <h2><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h2>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div> <!--//End Image Gallery -->
+
+
+        </div>
+
+    </section>
+
+    {#    <a class="btn btn-primary center-block" href="#">{% trans "Load More" %}</a>#}
+
+{% endblock content %}

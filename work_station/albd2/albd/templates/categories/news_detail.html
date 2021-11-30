@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load photo_gallery %}
+{% load video_gallery %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-9"> <!-- Article area -->
+
+            <h1>{{ label_title }}</h1>
+
+            {% for news in page %}
+
+                <div class="catBox">
+                    <div class="row">
+                        <div class="col-md-3">
+                        <a href="{{ news.get_absolute_url }}">
+                            <img class="img-responsive img-thumbnail"
+                                    {% if news.photos.first.image.file.url %}
+                                 src="{{ news.photos.first.image.file.url }}"
+                                    {% else %}
+                                 src="{% static 'images/cat-img.png' %}"
+                                    {% endif %}
+                                 alt="cat"/>
+                        </a>
+                        </div>
+                        <div class="col-md-9">
+                            <h3><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h3>
+                            {% if news.snippet %}
+                                <p>{{ news.snippet|striptags|safe|truncatechars:350 }}</p>
+                            {% else %}
+                                <p>{{ news.body|striptags|safe|truncatechars:350 }}</p>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+
+          {% if page.paginator.num_pages > 1 %}
+          <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center">
+                  {% if page.paginator.num_pages != 1 %}
+                      <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                  {% else %}
+                      <li class="page-item disabled"><a class="page-link" href="#">First</a></li>
+                  {% endif %}
+                  {% if page.has_previous %}
+                      <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}">&laquo;</a></li>
+                  {% else %}
+                      <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                  {% endif %}
+                  {% for i in page.paginator.page_range %}
+                      {% if page.number == i %}
+                          <li class="page-item active"><a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a></li>
+                      {% elif page.number > i|add:"-5" and page.number < i|add:"+5"%}
+                          <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                      {% endif %}
+                  {% endfor %}
+                  {% if page.has_next %}
+                      <li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}">&raquo;</a></li>
+                  {% else %}
+                      <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+                  {% endif %}
+                  {% if page.paginator.num_pages != page.number %}
+                      <li class="page-item"><a class="page-link" href="?page={{ page.paginator.num_pages }}">Last</a></li>
+                  {% else %}
+                      <li class="page-item disabled"><a class="page-link" href="#">Last</a></li>
+                  {% endif %}
+              </ul>
+          </nav>
+          {% endif %}
+            {% comment %}
+            <ul class="pagination justify-content-end">
+                {% if page.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page.previous_page_number }}" tabindex="-1">prev</a>
+                </li>
+                {% else %}
+                    <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for l in  page.paginator.page_range %}
+                    <li class="page-item {% if page.number == l %} active {% endif %}">
+                        <a class="page-link" href="?page={{ l }}">{{ l }}</a>
+                    </li>
+                {% endfor %}
+                {% if page.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page.next_page_number }}">next</a>
+                </li>
+                {% else %}
+                    <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+            </ul>
+            {% endcomment %}
+        </div>
+        <div class="col-md-3">
+            <!-- Start Right side -->
+
+            <!-- Image Gallery -->
+            <h2 class="contentTitle noMargin">{% trans "In picture" %}</h2>
+
+            <div class="rightGallery"> <!-- Start Right Gallery -->
+
+                {% get_photo_gallery as photo_gallery %}
+                {% for url, news in photo_gallery.items %}
+                    {% if forloop.first %}
+                        <div class="detailsImage">
+                            <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                                 alt="Details Image">
+                            <div class="caption">{{ news.title }}</div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div class="row thumbViewArea">
+                    {% for url, news in photo_gallery.items %}
+                        {% if forloop.counter > 1 %}
+                            <div class="col-sm-6 col-xs-6">
+                                <div class="smallThumbBox">
+                                    <div class="thumbImage">
+                                        <a class="thumbIcon" href="#"><i class="fa {{ news.icon_class }}"></i></a>
+                                        <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                                             alt="video">
+                                    </div>
+                                    <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div><!-- //EndImage Gallery -->
+
+
+            </div><!-- //End Right Gallery -->
+
+
+            <!-- Video Gallery -->
+
+            <h2 class="contentTitle noMargin">{% trans "Video" %}</h2>
+
+            <div class="rightGallery"><!-- Start Right Gallery -->
+
+                {% get_video_gallery as video_gallery %}
+                {% for url, news in video_gallery.items %}
+                    {% if forloop.first %}
+
+                        <div class="detailsImage">
+                            <iframe width="100%" src="{{ news.video_url }}"
+                                    frameborder="0" allowfullscreen="" __idm_id__="683216897"></iframe>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div class="row thumbViewArea">
+                    {% for url, news in video_gallery.items %}
+                        {% if forloop.counter > 1 %}
+                            <div class="col-sm-6 col-xs-6">
+                                <div class="smallThumbBox">
+                                    <div class="thumbImage">
+                                        <a class="thumbIcon" href="#"><i class="fa {{ news.icon_class }}"></i></a>
+                                        <img class="img-responsive" src="{{ news.photos.first.image.file.url }}"
+                                             alt="video">
+                                    </div>
+                                    <h2><a href="{{ news.get_absolute_url }}">{{ news.title }}</a></h2>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <!-- End Gallery -->
+
+            </div><!-- //End Right Gallery -->
+
+        </div><!-- //..End  Right side -->
+    </div>
+{% endblock content %}

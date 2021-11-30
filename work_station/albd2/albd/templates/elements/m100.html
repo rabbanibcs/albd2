@@ -1,0 +1,75 @@
+{% load i18n %}
+{% load static %}
+{% load category_page_menu %}
+{% load category_news %}
+{% load thumbnail %}
+{% load top_banners %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<div class="desktopView hidden-xs navbar-fixed-top">
+
+  <!-- Header Section -->
+  <div id="headerSection">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          {% static "" as base_url %}
+          <div class="logo"><a href="{% url 'home' %}"><img class="img-responsive"
+                                                            src="{{base_url}}images/logo-{{ LANGUAGE_CODE }}.png"
+                                                            alt="logo"></a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="extBox">
+            {% get_static_banners as banners %}
+            {% for banner in banners %}
+              <a href="{{ banner.link }}"><img class="pull-right" src="{% thumbnail banner.image.file 460x60 crop %}"></a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Top Menu Section -->
+    <div class="topMenu clearfix">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+
+            <!--Main Menu -->
+            <div id="mainMenu">
+              <nav class="navbar navbar-default">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                          data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand hidden-xs" href="{% url 'home' %}"><i class="fa fa-home"></i></a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav">
+                  <li><a href="{% url 'mujib100:index' %}">{% trans "MUJIB 100" %}</a></li>
+                  <li><a href="{% url 'mujib100:liberator' %}">{% trans "THE LIBERATOR" %}</a></li>
+                  <li><a href="{% url 'mujib100:history' %}">{% trans "THE HISTORY" %}</a></li>
+                  <li><a href="{% url 'mujib100:celebration' %}">{% trans "THE CELEBRATION" %}</a></li>
+                  </ul>
+
+                </div><!-- /.navbar-collapse -->
+
+              </nav>
+            </div>  <!--/.. End Main Menu -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /..End Top Menu Section -->
+  </div> <!--/End Header Section -->
+
+</div> <!-- Desktop view -->
+

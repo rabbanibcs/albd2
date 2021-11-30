@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load clever_selects_extras %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <div class="row">
+    <h1>{% trans "Join Us" %}</h1>
+
+        <form class="joinus" id="join_us" method="post" action="{% url 'register' %}">
+            <input type="hidden" value="{% url 'joinus:ajax_chained_districts' %}" id="district_url" />
+            <input type="hidden" value="{% url 'joinus:ajax_chained_constituencies' %}" id="constituency_url" />
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <button class="btn btn-primary" type="submit">{% trans "Join" %} &raquo;</button>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+
+    $("#id_division").on('change', function(){
+        var division = $(this).val();
+        var district_url = $('#district_url').val() + "?parent_value="+division;
+        $.get(district_url, function(data){
+            var options = [];
+            var results = JSON.parse(data);
+            $.each(results, function(index, item) {
+                options.push('<option value="'+ item[0].toString() +'">'+item[1]+'</option>');
+            });
+
+            $('#id_district').html(options).change();
+
+        });
+    });
+
+
+    $("#id_district").on('change', function(){
+        var district = $(this).val();
+        var constituency_url = $('#constituency_url').val() + "?parent_value="+district;
+        $.get(constituency_url, function(data){
+            var options = [];
+            var results = JSON.parse(data);
+            $.each(results, function(index, item) {
+                options.push('<option value="'+ item[0].toString() +'">'+item[1]+'</option>');
+            });
+            $('#id_constituency').html(options);
+        });
+    });
+
+    $('.datepicker').dcalendarpicker({format: 'yyyy-mm-dd'});
+
+{% endblock %}

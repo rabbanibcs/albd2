@@ -1,0 +1,40 @@
+{% extends '100.html' %}
+{% load static %}
+
+{% block title %} {{ object.title }} {% endblock %}
+
+{% block meta %}
+    {% if object.meta_description %}
+        <meta name="description" content="{{ object.meta_description }}">
+    {% endif %}
+
+    {% if object.meta_key %}
+        <meta name="keywords" content="{{ object.meta_key }}">
+    {% endif %}
+
+    {% if object.author %}
+        <meta name="author" content="{{ object.author }}">
+    {% endif %}
+{% endblock %}
+
+{% block social_meta %}
+  <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
+  <meta property="fb:app_id" content="204463129958622"/>
+  <meta property="og:type" content="website"/>
+  {% if object.title %}
+  <meta property="og:title" content="{{ object.title }}"/>
+  {% endif %}
+  {% if object.snippet %}
+      <meta property="og:description" content="{{ object.snippet }}"/>
+    {% else %}
+      <meta property="og:description" content="{{ object.body|striptags }}"/>
+    {% endif %}
+  {% if object.photos.first.image %}
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ object.photos.first.image.file.url }}"/>
+  {% endif %}
+  <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+{% endblock %}
+
+{% block content %}
+
+{% endblock content %}
